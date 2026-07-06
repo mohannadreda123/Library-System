@@ -1,135 +1,187 @@
+#pragma once
 #include<iostream>
+#include<vector>
+#include"buy.cpp"
+#include"borrow.cpp"
 using namespace std;
+struct Book {
+    string title, ID, status;
+    double price;
+};
 class Library
 {
-protected:
-	string bookname;
-	int Price, CopiesNumber, borrowTime;
+private:
+    vector<Book> books = {
+        {"Don Quixote", "978-0060934347", "Exist", 16.99},
+        {"A Tale of Two Cities", "978-0141439600", "Exist", 8.00},
+        {"The Little Prince", "978-0156012195", "Exist", 6.50},
+        {"The Alchemist", "978-0062315007", "Exist", 14.25},
+        {"1984", "978-0451524935", "Exist", 9.99},
+        {"The Great Gatsby", "978-0743273565", "Exist", 15.00},
+        {"Crime and Punishment", "978-0140449136", "Exist", 12.49}
+    };
+    vector<Book>purchase = {};
 public:
-	string set_UserName()
+	void view_existed_Books()
 	{
-		string username;
-		cout << "Enter your name\n=> ";
-		cin >> username;
-		return username;
+        system("cls");
+        if (books.empty())
+        {
+            cout << "The Library is Empty.";
+        }
+        else
+        {
+            cout << "Title:\t\t\t\t\tID:\t\t\t\tStatus:\t\t\t\tPrice:\n\n";
+            for (int i = 0; i < books.size(); i++)
+            {
+                cout << books[i].title;
+                if (books[i].title.size() < 30)
+                {
+                    for (int j = books[i].title.size(); j <= 30; j++)
+                    {
+                        cout << " ";
+                    }
+                }
+                cout << "\t\t" << books[i].ID;
+                cout << "\t\t" << books[i].status;
+                cout << "\t\t\t" << books[i].price << "$\n\n";
+            }
+        }
 	}
-	string set_Address()
-	{
-		string add;
-		cout << "\nAdd your delivery address\n=> ";
-		cin >> add;
-		return add;
-	}
-	long long set_Phone()
-	{
-		long long phone;
-		cout << "\nAdd a contact number\n=> ";
-		cin >> phone;
-		return phone;
-	}
-	int Operation()
-	{
-		int operation;
-		system("cls");
-		cout << "Choose the wanted Operation\n\n";
-		cout << "1.Buy Books\n\n2.Book Inquiry\n\n";
-		cout << "=> ";
-		cin >> operation;
-		return operation;
-	}
-	void set_bookName()
-	{
-		string name;
-		system("cls");
-		cout << "Enter the book name\n=> ";
-		cin >> name;
-		bookname = name;
-	}
-	string get_bookname()
-	{
-		return bookname;
-	}
-	int bookNumber()
-	{
-		int numberOfbooks;
-		cout << "\nEnter the number of books\n\n=> ";
-		cin >> numberOfbooks;
-		return numberOfbooks;
-	}
-	bool availability()
-	{
-		srand(time(0));
-		int num = rand() % 2;
-		return num;
-	}
-	void set_price()
-	{
-		srand(time(0));
-		int price = ((rand() % 10) + 1) * 10;
-		Price = price;
-	}
-	int get_price()
-	{
-		return Price;
-	}
-	void exist(int price)
-	{
-		cout << "\nBook is available! [" << bookname << "] << is in stock.\nPrice: [" << Price << "$].\n\n";
-	}
-	void notExist()
-	{
-		cout << "\nSorry, this book is currently unavailable.\nYou can search for another book or check back later.\n\n";
-	}
-	bool confirm()
-	{
-		string answer;
-		cout << "Add to Cart?\n";
-		cin >> answer;
-		for (int i = 0; i < answer.size(); i++)
-		{
-			answer[i] = tolower(answer[i]);
-		}
-		system("cls");
-		if (answer == "yes") { return true; }
-		return false;
-	}
-	void set_numberOfcopies()
-	{
-		int number;
-		cout << "\nEnter the number of copies you want\n=> ";
-		cin >> number;
-		CopiesNumber = number;
-	}
-	int get_numberOfcopies()
-	{
-		return CopiesNumber;
-	}
-	void set_borrowTime()
-	{
-		int time;
-		cout << "\nHow long do you want to borrow the book for?\n";
-		cin >> time;
-		cout << "\n";
-		borrowTime = time;
-	}
-	int get_borrowTime()
-	{
-		return borrowTime;
-	}
-	bool final(string name, string address, long long number)
-	{
-		cout << "Your contact Information\n";
-		cout << "Your name : " << name;
-		cout << "\nYour Address : " << address;
-		cout << "\nYour Phone Number : " << number;
-		string answer;
-		cout << "\n\nConfirm?\n";
-		cin >> answer;
-		for (int i = 0; i < answer.size(); i++)
-		{
-			answer[i] = tolower(answer[i]);
-		}
-		if (answer == "yes") { return true; }
-		return false;
-	}
+    void Add_books()
+    {
+        string name, ID, status;
+        double price;
+        cout << "\nEnter Book Name:\n=> ";
+        cin.ignore();
+        getline(cin, name);
+        cout << "\nEnter Book ID:\n=> ";
+        cin >> ID;
+        for (int i = 0; i < books.size(); i++)
+        {
+            if (books[i].title == name || books[i].ID == ID)
+            {
+                cout << "This Book is Already Exist.";
+                return;
+            }
+        }
+        cout << "\nSet a book status\n=> ";
+        cin >> status;
+        cout << "\nSet a price for the book\n=> ";
+        cin >> price;
+        books.push_back({ name, ID, status, price });
+        cout << "\nBook Added Successfully!\n\n";
+    }
+    void Delete_books()
+    {
+        string name;
+        cout << "\nEnter Book Name\n=> ";
+        cin.ignore();
+        getline(cin, name);
+        for (int i = 0; i < books.size(); i++)
+        {
+            if (books[i].title == name)
+            {
+                books.erase(books.begin() + i);
+                cout << "\nBook Deleted Successfully!";
+                return;
+            }
+        }
+        cout << "\nThis Book isn't Exist.\n\n";
+    }
+    void view_card()
+    {
+        system("cls");
+        if (purchase.empty())
+        {
+            cout << "The card is Empty";
+        }
+        else
+        {
+            cout << "Title:\t\t\t\t\tID:\t\t\t\tStatus:\t\t\t\tPrice:\n\n";
+            for (int i = 0; i < purchase.size(); i++)
+            {
+                cout << purchase[i].title;
+                if (purchase[i].title.size() < 30)
+                {
+                    for (int j = purchase[i].title.size(); j <= 30; j++)
+                    {
+                        cout << " ";
+                    }
+                }
+                cout << "\t\t" << purchase[i].ID;
+                cout << "\t\t\t" << purchase[i].status;
+                if (purchase[i].status.size() < 10)
+                {
+                    for (int j = purchase[i].status.size(); j <= 30; j++)
+                    {
+                        cout << " ";
+                    }
+                }
+                cout << "\t" << purchase[i].price << "$\n\n";
+            }
+        }
+    }
+    void buy_book()
+    {
+        string name, ID;
+        cout << "\nEnter Book Name\n=> ";
+        cin.ignore();
+        getline(cin, name);
+        cout << "\nEnter Book ID\n=> ";
+        cin >> ID;
+        for (int i = 0; i < books.size(); i++)
+        {
+            if (books[i].title == name || books[i].ID == ID)
+            {
+                string answer;
+                cout << "\nThis Book is Avalaible\n\n";
+                cout << "Add to card?\n=> ";
+                cin >> answer;
+                for (int i = 0; i < answer.size(); i++)
+                {
+                    answer[i] = tolower(answer[i]);
+                }
+                if (answer == "yes") 
+                { 
+                    books[i].status = "Paid";
+                    purchase.push_back({ books[i].title, books[i].ID, books[i].status, books[i].price });
+                    books.erase(books.begin() + i);
+                }
+                return;
+            }
+        }
+        cout << "This Book isn't Exist";
+    }
+    void borrow_book()
+    {
+        string name, ID;
+        cout << "\nEnter Book Name\n=> ";
+        cin.ignore();
+        getline(cin, name);
+        cout << "\nEnter Book ID\n=> ";
+        cin >> ID;
+        for (int i = 0; i < books.size(); i++)
+        {
+            if (books[i].title == name || books[i].ID == ID)
+            {
+                string answer;
+                cout << "\nThis Book is Avalaible\n\n";
+                cout << "Add to card?\n=> ";
+                cin >> answer;
+                for (int i = 0; i < answer.size(); i++)
+                {
+                    answer[i] = tolower(answer[i]);
+                }
+                if (answer == "yes")
+                {
+                    books[i].status = "Borrowed";
+                    purchase.push_back({ books[i].title, books[i].ID, books[i].status, books[i].price });
+                    books.erase(books.begin() + i);
+                }
+                return;
+            }
+        }
+        cout << "This Book isn't Exist";
+    }
 };

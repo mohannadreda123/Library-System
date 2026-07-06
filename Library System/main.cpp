@@ -1,52 +1,47 @@
-#include<vector>
+#pragma once
+#include<iostream>
 #include<ctime>
 #include<cstdlib>
-#include<iostream>
-#include"customer.cpp"
+#include"admin.cpp"
+#include"user.cpp"
+#include"person.cpp"
 #include"library.cpp"
-#include"buy.cpp"
-#include"borrow.cpp"
+#include"UI.cpp"
 using namespace std;
 int main()
 {
-	Library user;
-	cout << "\t\t\t\t\t\tWelcome to New York Public Library\n\n";
-	string username = user.set_UserName();
-	string address = user.set_Address();
-	long long phone = user.set_Phone();
-	Customer cust(phone, address, username);
-	int opertaion_number = user.Operation();
-	user.set_bookName();
-	if (user.availability())
-	{
-		user.set_price();
-		user.set_numberOfcopies();
-		user.exist(user.get_price());
-		switch (opertaion_number)
-		{
-		case 1:
-		{
-			Buy buy;
-			buy.add_BooksInfo();
-			if (user.final(username, address, phone))
-			{
-				cout << "Enjoy with Your New Book.";
-			}
-			break;
-		}
-		case 2:
-		{
-			user.set_borrowTime();
-			Borrow borrow;
-			borrow.add_borrowInfo();
-			if (user.final(username, address, phone))
-			{
-				cout << "Enjoy with Your New Book.";
-			}
-			break;
-		}
-		}
-	}
-	else { user.notExist(); }
-	return 0;
+    Person* person;
+    Library manager;
+    UI ui;
+    if (ui.Intro() == 1)
+    {
+        person = new Admin;
+        person->set_Info();
+        do
+        {
+            switch (ui.Admin_Choice())
+            {
+            case 1: manager.Add_books(); break;
+            case 2: manager.Delete_books(); break;
+            case 3: manager.view_existed_Books(); break;
+            }
+        } while (ui.again());
+    }
+    else
+    {
+        person = new User;
+        person->set_Info();
+        do
+        {
+            switch (ui.User_Choice())
+            {
+            case 1: manager.buy_book(); break;
+            case 2: manager.borrow_book(); break;
+            case 3: manager.view_existed_Books(); break;
+            case 4: manager.view_card(); break;
+            }
+        } while (ui.again());
+    }
+    ui.buy();
+    return 0;
 }
