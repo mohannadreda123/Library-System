@@ -1,8 +1,7 @@
 #pragma once
 #include<iostream>
 #include<vector>
-#include"buy.cpp"
-#include"borrow.cpp"
+#include<string>
 using namespace std;
 struct Book {
     string title, ID, status;
@@ -43,8 +42,8 @@ public:
                     }
                 }
                 cout << "\t\t" << books[i].ID;
-                cout << "\t\t" << books[i].status;
-                cout << "\t\t\t" << books[i].price << "$\n\n";
+                cout << "\t\t\t" << books[i].status;
+                cout << "\t\t\t\t" << books[i].price << "$\n\n";
             }
         }
 	}
