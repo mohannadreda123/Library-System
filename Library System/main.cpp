@@ -1,7 +1,9 @@
 #pragma once
 #include<iostream>
-#include<ctime>
-#include<cstdlib>
+#include "transaction.cpp"
+#include "card.cpp"
+#include "buy.cpp"
+#include "borrow.cpp"
 #include"admin.cpp"
 #include"user.cpp"
 #include"person.cpp"
@@ -12,6 +14,10 @@ int main()
 {
     Person* person;
     Library manager;
+    Transaction trans;
+    Card card;
+    Buy buy;
+    Borrow borrow;
     UI ui;
     if (ui.Intro() == 1)
     {
@@ -35,13 +41,14 @@ int main()
         {
             switch (ui.User_Choice())
             {
-            case 1: manager.buy_book(); break;
-            case 2: manager.borrow_book(); break;
+            case 1: buy.buy_book(trans, manager); break;
+            case 2: borrow.borrow_book(trans, manager); break;
             case 3: manager.view_existed_Books(); break;
-            case 4: manager.view_card(); break;
+            case 4: card.view_card(manager); break;
             }
         } while (ui.again());
     }
     ui.buy();
+    delete person;
     return 0;
 }

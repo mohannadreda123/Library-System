@@ -12,7 +12,7 @@ public:
 	{
 		string name;
 		cout << "\nEnter your name\n=> ";
-		cin.ignore();
+		if (cin.peek() == '\n') cin.ignore();
 		getline(cin, name);
 		username = name;	
 	}
@@ -20,5 +20,5 @@ public:
 	{
 		return username;
 	}
-	
+	virtual ~Person() {};
 };
